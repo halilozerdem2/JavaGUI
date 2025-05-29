@@ -2,10 +2,9 @@ package thePackage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class RegisterPage extends JFrame {
-    private JTextField userText;
+    private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton registerButton, loginPageButton, homeButton;
 
@@ -14,16 +13,16 @@ public class RegisterPage extends JFrame {
         setSize(400, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(new Color(255, 248, 220));
+        getContentPane().setBackground(new Color(240, 248, 255));
         setLayout(null);
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(30, 30, 100, 25);
-        add(userLabel);
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setBounds(30, 30, 100, 25);
+        add(usernameLabel);
 
-        userText = new JTextField();
-        userText.setBounds(140, 30, 200, 25);
-        add(userText);
+        usernameField = new JTextField();
+        usernameField.setBounds(140, 30, 200, 25);
+        add(usernameField);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(30, 70, 100, 25);
@@ -41,12 +40,12 @@ public class RegisterPage extends JFrame {
         loginPageButton.setBounds(250, 110, 100, 25);
         add(loginPageButton);
 
-        homeButton = new JButton("Back to Home");
+        homeButton = new JButton("Home");
         homeButton.setBounds(140, 150, 150, 25);
         add(homeButton);
 
         registerButton.addActionListener(e -> {
-            String username = userText.getText().trim();
+            String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
 
             if (username.isEmpty() || password.isEmpty()) {
@@ -57,10 +56,10 @@ public class RegisterPage extends JFrame {
             if (!isValidPassword(password)) {
                 JOptionPane.showMessageDialog(this,
                         "Password must be at least 8 characters long and include:\n" +
-                        "- One uppercase letter\n" +
-                        "- One lowercase letter\n" +
-                        "- One digit\n" +
-                        "- One special character",
+                                "- One uppercase letter\n" +
+                                "- One lowercase letter\n" +
+                                "- One digit\n" +
+                                "- One special character",
                         "Invalid Password", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -69,7 +68,9 @@ public class RegisterPage extends JFrame {
             boolean inserted = DBHelper.insertUser(username, encrypted);
 
             if (inserted) {
-                JOptionPane.showMessageDialog(this, "Registration successful!");
+                JOptionPane.showMessageDialog(this, "Basic registration complete. Proceed to additional info...");
+                dispose();
+                new RegisterPage2(username);
             } else {
                 JOptionPane.showMessageDialog(this, "User already exists!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -107,14 +108,11 @@ public class RegisterPage extends JFrame {
 
         for (char ch : text.toCharArray()) {
             if (Character.isUpperCase(ch)) {
-                char c = (char) ('A' + (ch - 'A' + shift) % 26);
-                result.append(c);
+                result.append((char) ('A' + (ch - 'A' + shift) % 26));
             } else if (Character.isLowerCase(ch)) {
-                char c = (char) ('a' + (ch - 'a' + shift) % 26);
-                result.append(c);
+                result.append((char) ('a' + (ch - 'a' + shift) % 26));
             } else if (Character.isDigit(ch)) {
-                char c = (char) ('0' + (ch - '0' + shift) % 10);
-                result.append(c);
+                result.append((char) ('0' + (ch - '0' + shift) % 10));
             } else {
                 result.append((char) (ch + shift));
             }
@@ -123,5 +121,3 @@ public class RegisterPage extends JFrame {
         return result.toString();
     }
 }
-
-

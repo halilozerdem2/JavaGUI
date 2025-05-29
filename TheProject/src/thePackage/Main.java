@@ -1,11 +1,13 @@
 package thePackage;
 
 public class Main {
+    public static void main(String[] args) {
+        DBHelper.createUsersTable();
 
-	 public static void main(String[] args) {
-	        DBHelper.createUsersTable(); // Uygulama başında tabloyu oluştur
-	        new MainPage(); // Önce register ekranı
+        // Ana sayfayı başlat
+        new MainPage();
 
+        // İzleme sayfasını ayrı olarak başlat (istersen butonla da açabilirsin)
+        new DatabasePage();
+    }
 }
-	 }
-
